@@ -6,6 +6,261 @@
 <title>Kelurahan Lembang — Kabupaten Bantaeng</title>
 <meta name="description" content="Portal Resmi Pemerintah Kelurahan Lembang, Kabupaten Bantaeng">
 <link rel="stylesheet" href="assets/site.css">
+<style>
+  /* ===== Official Carousel (hero, right side) ===== */
+  .hero-inner.has-officials{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .hero-inner.has-officials .hero-text{ flex:1 1 420px; max-width:640px; }
+
+  .official-carousel{
+    position:relative;
+    flex:0 0 auto;
+    width:min(420px, 100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    z-index:3;
+  }
+  .oc-stage{
+    position:relative;
+    width:100%;
+    height:340px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .oc-track{
+    position:relative;
+    width:100%;
+    height:100%;
+  }
+  .oc-slide{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:190px;
+    aspect-ratio:3/4;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 18px 40px -12px rgba(4,20,55,0.55);
+    border:3px solid rgba(255,255,255,0.85);
+    background:#dfe8f5;
+    transition:transform .6s cubic-bezier(.4,0,.2,1), opacity .6s cubic-bezier(.4,0,.2,1);
+    transform:translate(-50%,-50%) scale(0.6);
+    opacity:0;
+    z-index:1;
+    pointer-events:none;
+  }
+  .oc-slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 15%;
+    display:block;
+  }
+  .oc-slide.pos-center{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+    z-index:5;
+    pointer-events:auto;
+  }
+  .oc-slide.pos-left{
+    transform:translate(calc(-50% - 128px), -50%) scale(0.76);
+    opacity:0.5;
+    z-index:3;
+  }
+  .oc-slide.pos-right{
+    transform:translate(calc(-50% + 128px), -50%) scale(0.76);
+    opacity:0.5;
+    z-index:3;
+  }
+
+  .oc-nav{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.92);
+    color:#0A2E70;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:6;
+    box-shadow:0 8px 20px rgba(4,20,55,0.28);
+    transition:background .2s ease, transform .2s ease;
+  }
+  .oc-nav:hover{ background:#fff; transform:translateY(-50%) scale(1.07); }
+  .oc-nav svg{ width:18px; height:18px; }
+  .oc-prev{ left:0; }
+  .oc-next{ right:0; }
+
+  .oc-caption{
+    text-align:center;
+    margin-top:14px;
+    color:#fff;
+  }
+  .oc-name{
+    font-weight:700;
+    font-size:1.05rem;
+    line-height:1.3;
+    text-shadow:0 2px 10px rgba(0,0,0,0.35);
+  }
+  .oc-role{
+    margin-top:2px;
+    font-size:0.88rem;
+    font-weight:500;
+    color:#CFE0FF;
+    text-shadow:0 2px 10px rgba(0,0,0,0.35);
+  }
+
+  .oc-dots{
+    display:flex;
+    gap:8px;
+    margin-top:12px;
+  }
+  .oc-dots span{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.4);
+    cursor:pointer;
+    transition:all .25s ease;
+  }
+  .oc-dots span.active{
+    background:#fff;
+    width:20px;
+    border-radius:5px;
+  }
+
+  @media (max-width: 900px){
+    .hero-inner.has-officials{ justify-content:center; text-align:center; }
+    .hero-inner.has-officials .hero-text{ text-align:center; }
+    .official-carousel{ margin:0 auto; }
+  }
+  @media (max-width: 480px){
+    .oc-stage{ height:280px; }
+    .oc-slide{ width:150px; }
+    .oc-slide.pos-left{ transform:translate(calc(-50% - 92px), -50%) scale(0.72); }
+    .oc-slide.pos-right{ transform:translate(calc(-50% + 92px), -50%) scale(0.72); }
+  }
+
+  /* ===== Statistik Penduduk & Pekerjaan (carousel) ===== */
+  .info-card{
+    background:#fff;
+    border-radius:20px;
+    padding:32px clamp(16px,4vw,40px) 26px;
+    box-shadow:0 10px 40px -18px rgba(4,20,55,0.18);
+  }
+  .pop-sub{
+    color:#6B7686;
+    font-size:0.95rem;
+    margin:6px 0 22px;
+  }
+  .pop-carousel-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .pop-viewport{
+    flex:1 1 auto;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+  }
+  .pop-viewport::-webkit-scrollbar{ display:none; }
+  .pop-track{
+    display:flex;
+    gap:18px;
+  }
+  .pop-item{
+    flex:0 0 auto;
+    width:190px;
+    background:#F7F9FC;
+    border:1px solid #EEF1F6;
+    border-radius:16px;
+    padding:24px 16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+  .pop-icon{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:14px;
+  }
+  .pop-icon svg{ width:24px; height:24px; }
+  .pop-icon.c1{ background:#E7F0FF; color:#2F6FED; }
+  .pop-icon.c2{ background:#FDEAE3; color:#E8613C; }
+  .pop-icon.c3{ background:#F1EAFE; color:#8B5CF6; }
+  .pop-icon.c4{ background:#E1F7F4; color:#12A594; }
+  .pop-icon.c5{ background:#FEF3DD; color:#F0A020; }
+  .pop-icon.c6{ background:#FCE7F3; color:#E8478B; }
+  .pop-icon.c7{ background:#E9E7FC; color:#4F3EC4; }
+  .pop-icon.c8{ background:#ECEEF1; color:#6B7280; }
+  .pop-value{
+    font-size:1.9rem;
+    font-weight:800;
+    color:#0A2E70;
+    line-height:1.1;
+  }
+  .pop-unit{
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.04em;
+    color:#9AA3B2;
+    text-transform:uppercase;
+    margin-top:2px;
+  }
+  .pop-label{
+    margin-top:8px;
+    font-size:0.98rem;
+    font-weight:600;
+    color:#1B2A4A;
+  }
+  .pop-nav{
+    flex:0 0 auto;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:1px solid #E3E7EE;
+    background:#fff;
+    color:#0A2E70;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 6px 16px -6px rgba(4,20,55,0.2);
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .pop-nav:hover{ transform:scale(1.06); }
+  .pop-nav svg{ width:18px; height:18px; }
+  .pop-nav.is-disabled{ opacity:0.35; cursor:default; pointer-events:none; }
+  .pop-note{
+    text-align:right;
+    margin-top:16px;
+    font-size:0.85rem;
+    color:#9AA3B2;
+  }
+  @media (max-width:480px){
+    .pop-item{ width:150px; padding:18px 12px; }
+    .pop-value{ font-size:1.6rem; }
+  }
+</style>
 </head>
 <body>
 <header class="navbar transparent" id="navbar">
@@ -17,9 +272,36 @@
         <span class="t2">Kabupaten Bantaeng</span>
       </div>
     </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="profil.html" class="">Profil Kelurahan</a></li>
+      <li class="has-dropdown">
+        <a href="layanan.html" class="">Layanan
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="dropdown">
+          <a href="layanan-posyandu.html">Posyandu</a>
+          <a href="layanan-sekolah-dasar.html">Sekolah Dasar</a>
+          <a href="layanan-paud.html">PAUD</a>
+          <a href="layanan-umkm.html">UMKM</a>
+          <a href="layanan-sma-smk.html">SMA/SMK</a>
+          <a href="layanan-kelompok-tani.html">Kelompok Tani</a>
+        </div>
+      </li>
+    </ul>
     <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
   </div>
 </header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-btn" id="closeMobile">&times;</div>
+  <ul>
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="profil.html">Profil Kelurahan</a></li>
+    <li><a href="layanan.html">Layanan</a></li>
+    <li><a href="nomor-penting.html">Nomor Penting</a></li>
+  </ul>
+</div>
 
 <section class="hero" id="hero">
   <div class="hero-slide active" style="background-image:url('https://images.pexels.com/photos/35975131/pexels-photo-35975131.jpeg?auto=compress&cs=tinysrgb&w=1920')"></div>
@@ -27,7 +309,7 @@
   <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/15285304/pexels-photo-15285304.jpeg?auto=compress&cs=tinysrgb&w=1920')"></div>
   <div class="hero-scrim"></div>
 
-  <div class="container hero-inner">
+  <div class="container hero-inner has-officials">
     <div class="hero-text">
       <div class="eyebrow-line">Portal Resmi</div>
       <h1 class="hero-title">Pemerintah <span class="blue">Kelurahan Lembang</span></h1>
@@ -36,11 +318,40 @@
       <a href="#info" class="hero-cta">Selengkapnya <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
     </div>
 
-    <div class="hati-card">
-      <div class="hati-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-      <div class="l1">Melayani dengan</div>
-      <div class="l2">HATI</div>
-      <div class="l3">Harmonis, Akuntabel,<br>Terpercaya, Inovatif</div>
+    <div class="official-carousel" id="officialCarousel">
+      <div class="oc-stage">
+        <button class="oc-nav oc-prev" id="ocPrev" aria-label="Sebelumnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+
+        <div class="oc-track" id="ocTrack">
+          <div class="oc-slide" data-i="0">
+            <img src="assets/pejabat-dedy.jpg" alt="Dedy Anshari R, S.Kom., M.M — Lurah Lembang">
+          </div>
+          <div class="oc-slide" data-i="1">
+            <img src="assets/pejabat-zulkarnain.png" alt="Zulkarnain, SE, MM — Camat Bantaeng">
+          </div>
+          <div class="oc-slide" data-i="2">
+            <img src="assets/pejabat-fauzy.jpg" alt="M. Fathul Fauzy Nurdin, M.I.Kom — Bupati Bantaeng">
+          </div>
+          <div class="oc-slide" data-i="3">
+            <img src="assets/pejabat-sahabuddin.jpg" alt="Drs. H. Sahabuddin — Wakil Bupati Bantaeng">
+          </div>
+        </div>
+
+        <button class="oc-nav oc-next" id="ocNext" aria-label="Berikutnya">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      <div class="oc-caption">
+        <div class="oc-name" id="ocName">Dedy Anshari R, S.Kom., M.M</div>
+        <div class="oc-role" id="ocRole">Lurah Lembang</div>
+      </div>
+
+      <div class="oc-dots" id="ocDots">
+        <span class="active" data-i="0"></span><span data-i="1"></span><span data-i="2"></span><span data-i="3"></span>
+      </div>
     </div>
   </div>
 
@@ -58,18 +369,95 @@
 
 <section class="container info-section" id="info">
   <div class="info-card">
-    <div class="info-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>INFORMASI KELURAHAN LEMBANG</span></div>
-    <div class="stat-row">
-      <div class="stat-item"><div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div><div><div class="stat-num" data-count="4230">0</div><div class="stat-label">Jumlah Penduduk</div></div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div><div><div class="stat-num" data-count="1400">0</div><div class="stat-label">Jumlah KK</div></div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"></circle><circle cx="5" cy="19" r="2.5"></circle><circle cx="19" cy="19" r="2.5"></circle><line x1="12" y1="7.5" x2="6.3" y2="17"></line><line x1="12" y1="7.5" x2="17.7" y2="17"></line></svg></div><div><div class="stat-num" data-count="14">0</div><div class="stat-label">Jumlah RT</div></div></div>
-      <div class="stat-divider"></div>
-      <div class="stat-item"><div class="stat-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div><div><div class="stat-num" data-count="7">0</div><div class="stat-label">Jumlah RW</div><div class="stat-note">Data per Mei 2024</div></div></div>
+    <div class="info-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>STATISTIK PENDUDUK &amp; PEKERJAAN</span></div>
+    <p class="pop-sub">Data jumlah warga berdasarkan jenis kelamin dan mata pencaharian</p>
+
+    <div class="pop-carousel-wrap">
+      <button class="pop-nav pop-prev" id="popPrev" type="button" aria-label="Sebelumnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <div class="pop-viewport" id="popViewport">
+        <div class="pop-track" id="popTrack"></div>
+      </div>
+
+      <button class="pop-nav pop-next" id="popNext" type="button" aria-label="Berikutnya">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
+
   </div>
 </section>
+
+<script>
+(function(){
+  var popStats = [
+    { label:"Laki-laki", value:2764, color:"c1", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#4A7FE8"/><path d="M24.5 41.5c2.3 2.8 4.8 4.3 7.5 4.3s5.2-1.5 7.5-4.3" fill="none" stroke="#3A67C4" stroke-width="2" stroke-linecap="round"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/></svg>' },
+    { label:"Perempuan", value:2741, color:"c6", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#F0699C"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><path d="M15.5 27.5c-1.2-14.3 7-22.8 17-22.8s18.2 8.5 17 22.8c-.1-3-2-4.3-3-4.4 1-6.3-3.3-13.4-14-13.4s-15 7.1-14 13.4c-1 .1-2.9 1.4-3 4.4z" fill="#22262E"/><path d="M15.5 27.5c-.1 5.1 1 9.3 3 11.6-1-4.1-1.1-8.1-1.1-10.3-1-.1-1.7-.6-1.9-1.3z" fill="#22262E"/><path d="M48.5 27.5c.1 5.1-1 9.3-3 11.6 1-4.1 1.1-8.1 1.1-10.3 1-.1 1.7-.6 1.9-1.3z" fill="#22262E"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/></svg>' },
+    { label:"Total Warga", value:5505, color:"c7", icon:'<svg viewBox="0 0 64 64" style="width:48px;height:48px;display:block"><path d="M2 56.5c0-9 6-15.2 15-15.2s15 6.2 15 15.2v3.5H2v-3.5z" fill="#3FA66B"/><circle cx="17" cy="27" r="10" fill="#F4B583"/><path d="M8 26.3c-.5-7.1 4-13 9-13s9.6 5.9 9 13c-.1-2-1.5-3-2.5-3.3.4-4.1-2.1-7.2-6.5-7.2s-6.9 3.1-6.5 7.2c-1 .3-2.4 1.3-2.5 3.3z" fill="#22262E"/><path d="M32 56.5c0-9 6-15.2 15-15.2s15 6.2 15 15.2v3.5H32v-3.5z" fill="#9B6FE0"/><circle cx="47" cy="27" r="10" fill="#F4B583"/><path d="M37.2 27.9c-.6-8 4-14.2 9.8-14.2s10.4 6.2 9.8 14.2c-.1-2-1.5-3.1-2.5-3.5.1-4.5-3-8-7.3-8s-7.4 3.5-7.3 8c-1 .4-2.4 1.5-2.5 3.5z" fill="#22262E"/><path d="M18.5 61c0-7.7 5.3-13 13.5-13s13.5 5.3 13.5 13v2H18.5v-2z" fill="#F0A93C"/><circle cx="32" cy="36" r="8.7" fill="#FBC59A"/><path d="M24.4 35.4c-.5-6.1 3.1-10.8 7.6-10.8s8.1 4.7 7.6 10.8c-.1-1.6-1-2.6-2-2.9.3-3.1-1.7-5.9-5.6-5.9s-5.9 2.8-5.6 5.9c-1 .3-1.9 1.3-2 2.9z" fill="#22262E"/></svg>' },
+    { label:"Nelayan", value:500, color:"c4", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#3FA66B"/><path d="M24 41.5l3.4 5.6 4.6-5.6 4.6 5.6 3.4-5.6" fill="none" stroke="#2E8858" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><path d="M18 21.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/></svg>' },
+    { label:"Wiraswasta", value:50, color:"c5", icon:'<svg viewBox="0 0 64 64" style="width:40px;height:40px;display:block"><rect x="24" y="12" width="16" height="11" rx="4" fill="none" stroke="#8B4A1E" stroke-width="4"/><rect x="8" y="24" width="48" height="28" rx="6" fill="#E8863B"/><rect x="4" y="29" width="56" height="8" fill="#C96A28"/><rect x="27" y="29" width="10" height="9" rx="2" fill="#8B4A1E"/></svg>' },
+    { label:"PNS", value:110, color:"c1", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#2F4C8C"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M25 40 L32 47 L39 40 L39 34 L25 34 Z" fill="#F5F7FA"/><path d="M30.5 40 L32 58 L33.5 40 Z" fill="#C0392B"/></svg>' },
+    { label:"Pedagang", value:100, color:"c2", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#D98A3D"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M42 46 L54 46 L52 58 L44 58 Z" fill="#8B5A2E"/><path d="M43.5 46 L52.5 46" stroke="#6B4220" stroke-width="1.2"/><path d="M44.5 50 L51.5 50" stroke="#A9793F" stroke-width="1"/><path d="M45.5 42 C45.5 38 50.5 38 50.5 42" fill="none" stroke="#6B4220" stroke-width="1.6"/></svg>' },
+    { label:"Petani", value:50, color:"c2", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#5B9B4B"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="32" cy="14.5" rx="17" ry="3.6" fill="#E4C77A"/><path d="M20.5 14 C20.5 6.5 25.7 3 32 3 C38.3 3 43.5 6.5 43.5 14 Z" fill="#EFDBA0"/><path d="M50 50 C50 44 52 40 52 34" stroke="#5B9B4B" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M52 36 C54 34 56 34 57 32" stroke="#8CC152" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M52 41 C50 39 48 39 47 37" stroke="#8CC152" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>' },
+    { label:"Polri", value:40, color:"c1", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#22304A"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M20 15 C20 8.5 25.2 5 32 5 C38.8 5 44 8.5 44 15 L44 18 L20 18 Z" fill="#1B2338"/><ellipse cx="32" cy="18" rx="14.4" ry="3" fill="#11162A"/><circle cx="32" cy="11.5" r="2.3" fill="#E8B93C"/><path d="M26 39 L32 45 L38 39 L38 34 L26 34 Z" fill="#F5F7FA"/></svg>' },
+    { label:"Mahasiswa", value:30, color:"c3", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#8B5CF6"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M32 4 L47 10.5 L32 17 L17 10.5 Z" fill="#22262E"/><path d="M30.7 17 L33.3 17 L33.3 21.5 L32 22.5 L30.7 21.5 Z" fill="#22262E"/><circle cx="33.2" cy="22.4" r="1.5" fill="#F0A020"/></svg>' },
+    { label:"Rumah Tangga", value:30, color:"c6", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#F1A7C4"/><path d="M15.5 27.5c-1.2-14.3 7-22.8 17-22.8s18.2 8.5 17 22.8c-.1-3-2-4.3-3-4.4 1-6.3-3.3-13.4-14-13.4s-15 7.1-14 13.4c-1 .1-2.9 1.4-3 4.4z" fill="#22262E"/><path d="M15.5 27.5c-.1 5.1 1 9.3 3 11.6-1-4.1-1.1-8.1-1.1-10.3-1-.1-1.7-.6-1.9-1.3z" fill="#22262E"/><path d="M48.5 27.5c.1 5.1-1 9.3-3 11.6 1-4.1 1.1-8.1 1.1-10.3 1-.1 1.7-.6 1.9-1.3z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M42 46 L48 41 L54 46 L54 58 L42 58 Z" fill="#E8478B"/><rect x="46" y="51" width="3.4" height="7" fill="#FCE7F3"/><path d="M22 40 C22 37 26 35 32 35 C38 35 42 37 42 40 L42 44 L22 44 Z" fill="#F6B8D2"/></svg>' },
+    { label:"Pensiunan", value:40, color:"c8", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#8E9AAF"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#B9C0CA"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#B9C0CA"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#B9C0CA"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><circle cx="27" cy="25.5" r="3.1" fill="none" stroke="#5B6472" stroke-width="1.3"/><circle cx="37" cy="25.5" r="3.1" fill="none" stroke="#5B6472" stroke-width="1.3"/><path d="M30 25.5 L34 25.5" stroke="#5B6472" stroke-width="1.3"/><path d="M48 40 L44 60" stroke="#8B5A2E" stroke-width="2.2" stroke-linecap="round"/><path d="M48 40 C51 40 51.5 43 48.3 43.3" stroke="#8B5A2E" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>' },
+    { label:"Belum Kerja", value:40, color:"c8", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#AAB2BD"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><circle cx="49" cy="42" r="7" fill="#D8DEE6"/><text x="49" y="46" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#6B7280" text-anchor="middle">?</text></svg>' },
+    { label:"TNI", value:40, color:"c7", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#4B5D3A"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M20 15 C20 8.5 25.2 5 32 5 C38.8 5 44 8.5 44 15 L44 18 L20 18 Z" fill="#3B4A2E"/><ellipse cx="32" cy="18" rx="14.4" ry="3" fill="#2A351F"/><path d="M32 8.3 l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z" fill="#F0C24B"/></svg>' },
+    { label:"Karyawan", value:40, color:"c4", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#5B7DB1"/><path d="M18 22.5c0-9.2 6.2-15.3 14-15.3s14 6.1 14 15.3c0-3-2-5-4-5.6 0 0-1 3-4 3-1.1 0-1.6-1-1.6-1s-1 2-4.1 2-4.1-2-4.1-2-1 1.5-2.6 1.5c-2.1 0-3.1-2.6-3.1-2.6-2 .6-4.5 3.1-4.5 5.7z" fill="#22262E"/><path d="M18 22.5c-.3 3.2.1 6.3 1.2 8.5-.1-3.1.3-5.8 1.3-7.4-1-.1-2-.5-2.5-1.1z" fill="#22262E"/><path d="M46 22.5c.3 3.2-.1 6.3-1.2 8.5.1-3.1-.3-5.8-1.3-7.4 1-.1 2-.5 2.5-1.1z" fill="#22262E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><path d="M25 40 L32 47 L39 40 L39 34 L25 34 Z" fill="#F5F7FA"/><path d="M30.5 40 L32 50 L33.5 40 Z" fill="#3A5DAE"/><path d="M32 47 L32 56" stroke="#B7C0CC" stroke-width="1" stroke-dasharray="1.5,1.5"/><rect x="29" y="55" width="6" height="8" rx="1" fill="#5B7DB1"/></svg>' },
+    { label:"Peternak", value:90, color:"c5", icon:'<svg viewBox="0 0 64 64" style="width:46px;height:46px;display:block"><path d="M8 58c0-11.5 9.5-19 24-19s24 7.5 24 19v6H8v-6z" fill="#6B8E4E"/><rect x="27" y="33" width="10" height="11" rx="4" fill="#F4B183"/><circle cx="32" cy="24" r="14" fill="#FBC59A"/><circle cx="27" cy="25.5" r="1.6" fill="#26262A"/><circle cx="37" cy="25.5" r="1.6" fill="#26262A"/><path d="M27.5 30.5c1.9 1.8 7 1.8 9 0" fill="none" stroke="#C9895F" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="32" cy="14.5" rx="17" ry="3.6" fill="#D8B25C"/><path d="M20.5 14 C20.5 6.5 25.7 3 32 3 C38.3 3 43.5 6.5 43.5 14 Z" fill="#E4C77A"/><ellipse cx="50" cy="46" rx="7" ry="6" fill="#F5F5F5"/><ellipse cx="45.5" cy="43" rx="2.4" ry="3" fill="#F5F5F5"/><ellipse cx="54.5" cy="43" rx="2.4" ry="3" fill="#F5F5F5"/><circle cx="47.5" cy="46" r="1" fill="#3A3A3A"/><circle cx="52.5" cy="46" r="1" fill="#3A3A3A"/><ellipse cx="50" cy="49.3" rx="2" ry="1.3" fill="#E8A6B0"/></svg>' }
+  ];
+
+  var track = document.getElementById('popTrack');
+  if(!track) return;
+
+  var html = '';
+  for(var i=0;i<popStats.length;i++){
+    var s = popStats[i];
+    html += '<div class="pop-item">' +
+              '<div class="pop-icon ' + s.color + '">' + s.icon + '</div>' +
+              '<div class="pop-value">' + s.value.toLocaleString('id-ID') + '</div>' +
+              '<div class="pop-unit">Orang</div>' +
+              '<div class="pop-label">' + s.label + '</div>' +
+            '</div>';
+  }
+  track.innerHTML = html;
+
+  var viewport = document.getElementById('popViewport');
+  var prevBtn = document.getElementById('popPrev');
+  var nextBtn = document.getElementById('popNext');
+
+  function stepSize(){
+    var item = track.querySelector('.pop-item');
+    if(!item) return 0;
+    var trackStyle = window.getComputedStyle(track);
+    var gap = parseFloat(trackStyle.columnGap || trackStyle.gap) || 0;
+    return item.getBoundingClientRect().width + gap;
+  }
+
+  function updateNavState(){
+    var maxScroll = viewport.scrollWidth - viewport.clientWidth;
+    prevBtn.classList.toggle('is-disabled', viewport.scrollLeft <= 2);
+    nextBtn.classList.toggle('is-disabled', viewport.scrollLeft >= maxScroll - 2);
+  }
+
+  prevBtn.addEventListener('click', function(){
+    viewport.scrollBy({ left: -stepSize(), behavior: 'smooth' });
+  });
+  nextBtn.addEventListener('click', function(){
+    viewport.scrollBy({ left: stepSize(), behavior: 'smooth' });
+  });
+
+  viewport.addEventListener('scroll', function(){
+    window.requestAnimationFrame(updateNavState);
+  });
+  window.addEventListener('resize', updateNavState);
+
+  updateNavState();
+})();
+</script>
 
 
 <section class="container services-section" id="services">
@@ -77,6 +465,7 @@
   <h2 class="section-title">Portal Layanan Digital Kelurahan Lembang</h2>
   <p class="section-desc">Akses berbagai layanan dan informasi secara mudah, cepat dan transparan.</p>
   <div class="cards-grid" id="cardsGrid">
+
     <a href="https://lembang-bantaengkab.digitaldesa.id" class="service-card" target="_blank" rel="noopener noreferrer">
       <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
       <div class="card-title">Website Resmi Kelurahan</div>
@@ -116,6 +505,125 @@
       <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg></div>
       <div class="card-title">Blog TP PKK</div>
       <div class="card-desc">Kegiatan dan informasi TP PKK Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://rwonlinelembangbantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+      <div class="card-title">RW Online Biring Kassi</div>
+      <div class="card-desc">Informasi dan layanan online warga RW 05 Biring Kassi</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://bantaengkec.bantaengkab.go.id" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"></line><line x1="6" y1="18" x2="6" y2="11"></line><line x1="10" y1="18" x2="10" y2="11"></line><line x1="14" y1="18" x2="14" y2="11"></line><line x1="18" y1="18" x2="18" y2="11"></line><polygon points="12 2 21 7 3 7 12 2"></polygon></svg></div>
+      <div class="card-title">Website Kecamatan Bantaeng</div>
+      <div class="card-desc">Portal resmi Kecamatan Bantaeng</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://bantaengkab.go.id" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22V4a1 1 0 0 1 1-1h9l6 6v13"></path><path d="M14 3v6h6"></path><line x1="8" y1="13" x2="16" y2="13"></line><line x1="8" y1="17" x2="16" y2="17"></line></svg></div>
+      <div class="card-title">Website Kabupaten Bantaeng</div>
+      <div class="card-desc">Portal resmi Pemerintah Kabupaten Bantaeng</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://digitaldesa.id" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></div>
+      <div class="card-title">Digital Desa</div>
+      <div class="card-desc">Platform digitalisasi desa dan kelurahan</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://smarttour360lembang.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></div>
+      <div class="card-title">Smart Tour 360&deg; Lembang</div>
+      <div class="card-desc">Jelajahi Kelurahan Lembang dalam tampilan 360 derajat</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://dedyansharibantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+      <div class="card-title">Sosok Lurah Lembang</div>
+      <div class="card-desc">Profil dan kiprah Lurah Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://tosiballa.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+      <div class="card-title">Tosiballa</div>
+      <div class="card-desc">Blog informasi dan kegiatan Tosiballa</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://sedarahlembang.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"></path></svg></div>
+      <div class="card-title">Sedarah Lembang</div>
+      <div class="card-desc">Informasi dan kegiatan program Sedarah Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://sambangdialogislembangbantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+      <div class="card-title">Sambang Dialogis Lembang</div>
+      <div class="card-desc">Kegiatan sambang dialogis bersama warga Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://rondamalamlembangbantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></div>
+      <div class="card-title">Ronda Malam Lembang</div>
+      <div class="card-desc">Informasi kegiatan ronda malam warga Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://mmklembangbantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+      <div class="card-title">MMK Lembang</div>
+      <div class="card-desc">Kegiatan Musyawarah Masyarakat Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://satuharisatuberitalembangbantaeng.blogspot.com" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+      <div class="card-title">Satu Hari Satu Berita</div>
+      <div class="card-desc">Update berita harian seputar Kelurahan Lembang</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://web.facebook.com/kellembangbtg/" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></div>
+      <div class="card-title">Facebook Kelurahan Lembang</div>
+      <div class="card-desc">Ikuti update dan informasi terbaru di Facebook</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://wa.me/6282344548889" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
+      <div class="card-title">WhatsApp Kelurahan Lembang</div>
+      <div class="card-desc">Hubungi kami langsung melalui WhatsApp</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://www.google.com/maps/place/?q=place_id%3AChIJnUfurrGyvi0R_nssVa5czcA" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+      <div class="card-title">Lokasi Kantor Kelurahan</div>
+      <div class="card-desc">Lihat lokasi Kantor Kelurahan Lembang di Google Maps</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://drive.google.com/drive/folders/1kq92DdLTIS-La7DN0zTLb6dUpmHtj_N_?usp=sharing" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg></div>
+      <div class="card-title">Dokumen TOSIBALLA</div>
+      <div class="card-desc">Akses dokumen dan arsip TOSIBALLA di Google Drive</div>
+      <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
+    </a>
+
+    <a href="https://mitramabes.com/kapolres-bantaeng-larang-petasan-dan-kembang-api-saat-malam-tahun-baru-2026/" class="service-card" target="_blank" rel="noopener noreferrer">
+      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+      <div class="card-title">Mitra Mabes</div>
+      <div class="card-desc">Berita seputar keamanan dan informasi Kabupaten Bantaeng</div>
       <div class="card-arrow-row"><div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div></div>
     </a>
   </div>
@@ -168,29 +676,109 @@
     </div>
 
     <div>
-      <h4>Hubungi Kami</h4>
+      <h4>Tautan Cepat</h4>
       <ul>
-        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>(0413) 123456</span></li>
-        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>lembang@bantaengkab.go.id</span></li>
-        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Kelurahan Lembang, Kab. Bantaeng</span></li>
-      </ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="profil.html">Profil Kelurahan</a></li>
+        <li><a href="layanan.html">Layanan</a></li>
+          </ul>
     </div>
 
     <div>
-      <h4>Ikuti Kami</h4>
-      <div class="social-row">
-        <a href="https://web.facebook.com/kellembangbtg/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
-        <a href="https://www.instagram.com/lembangsquadbantaeng/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
-        <a href="https://youtube.com/@kelurahanlembangbantaeng?si=EqUEaEeyc4PjTZDh" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 6.2a2.8 2.8 0 0 0-2-2C18.9 3.7 12 3.7 12 3.7s-6.9 0-8.5.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.8 2.8 2.8 0 0 0 2 2c1.6.5 8.5.5 8.5.5s6.9 0 8.5-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.8z"></path><polygon points="9.8 15.5 15.8 12 9.8 8.5"></polygon></svg></a>
-      </div>
+      <h4>Hubungi Kami</h4>
+      <ul>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>+62</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>kelurahanlembangbantaeng@gmail.com</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Jl. H. Solthan No. Kelurahan Lembang-Kecamatan Bantaeng-Kabupaten Bantaeng</span></li>
+      </ul>
     </div>
 
   </div>
 
-  <div class="footer-bottom">&copy; 2024 Kelurahan Lembang, Kabupaten Bantaeng. All rights reserved. | Dibuat oleh KKN 79 Universitas Islam Negeri Alauddin Makassar</div>
+  <div class="footer-bottom">&copy; 2024 Kelurahan Lembang, Kabupaten Bantaeng. All rights reserved.</div>
 </footer>
 
 <script src="assets/site.js"></script>
+<script>
+(function(){
+  var officials = [
+    { name: "Dedy Anshari R, S.Kom., M.M", role: "Lurah Lembang" },
+    { name: "Zulkarnain, SE, MM", role: "Camat Bantaeng" },
+    { name: "M. Fathul Fauzy Nurdin, M.I.Kom", role: "Bupati Bantaeng" },
+    { name: "Drs. H. Sahabuddin", role: "Wakil Bupati Bantaeng" }
+  ];
+
+  var track = document.getElementById('ocTrack');
+  var slides = track ? Array.prototype.slice.call(track.querySelectorAll('.oc-slide')) : [];
+  var nameEl = document.getElementById('ocName');
+  var roleEl = document.getElementById('ocRole');
+  var dots = document.getElementById('ocDots') ? Array.prototype.slice.call(document.getElementById('ocDots').querySelectorAll('span')) : [];
+  var prevBtn = document.getElementById('ocPrev');
+  var nextBtn = document.getElementById('ocNext');
+  var current = 0;
+  var total = slides.length;
+  var autoTimer = null;
+
+  function render(){
+    slides.forEach(function(slide){
+      var i = parseInt(slide.getAttribute('data-i'), 10);
+      var diff = i - current;
+      if (diff > total / 2) diff -= total;
+      if (diff < -total / 2) diff += total;
+
+      slide.classList.remove('pos-center', 'pos-left', 'pos-right');
+      if (diff === 0){
+        slide.classList.add('pos-center');
+      } else if (diff === -1 || diff === total - 1){
+        slide.classList.add('pos-left');
+      } else if (diff === 1 || diff === -(total - 1)){
+        slide.classList.add('pos-right');
+      }
+    });
+
+    if (officials[current]){
+      nameEl.textContent = officials[current].name;
+      roleEl.textContent = officials[current].role;
+    }
+
+    dots.forEach(function(dot, i){
+      dot.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(i){
+    current = ((i % total) + total) % total;
+    render();
+  }
+
+  function next(){ goTo(current + 1); }
+  function prev(){ goTo(current - 1); }
+
+  function startAuto(){
+    stopAuto();
+    autoTimer = setInterval(next, 4000);
+  }
+  function stopAuto(){
+    if (autoTimer) clearInterval(autoTimer);
+  }
+
+  if (total > 0){
+    if (nextBtn) nextBtn.addEventListener('click', function(){ next(); startAuto(); });
+    if (prevBtn) prevBtn.addEventListener('click', function(){ prev(); startAuto(); });
+    dots.forEach(function(dot, i){
+      dot.addEventListener('click', function(){ goTo(i); startAuto(); });
+    });
+
+    var carouselEl = document.getElementById('officialCarousel');
+    if (carouselEl){
+      carouselEl.addEventListener('mouseenter', stopAuto);
+      carouselEl.addEventListener('mouseleave', startAuto);
+    }
+
+    render();
+    startAuto();
+  }
+})();
+</script>
 </body>
 </html>
-
