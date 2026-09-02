@@ -5,7 +5,7 @@
   --deep:#003B9B;
   --navy:#102A56;
   --light-blue:#EAF2FF;
-  --bg:#F7FAFF;
+  --bg:#DCE7F8;
   --white:#FFFFFF;
   --text:#0F1E3D;
   --muted:#5B6B8C;
@@ -67,9 +67,10 @@ button{font-family:inherit;border:none;cursor:pointer;background:none;}
   padding:8px;min-width:230px;
   opacity:0;visibility:hidden;transform:translateY(8px);
   transition:all .22s ease;
+  display:flex;flex-direction:column;
 }
 .has-dropdown:hover .dropdown{opacity:1;visibility:visible;transform:translateY(0);}
-.dropdown a{display:block;padding:10px 14px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--navy);}
+.dropdown a{display:block;width:100%;white-space:nowrap;padding:10px 14px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--navy);}
 .dropdown a:hover{background:var(--light-blue);color:var(--primary);}
 .hamburger{display:none;flex-direction:column;gap:5px;padding:8px;}
 .hamburger span{width:24px;height:2.5px;background:var(--navy);border-radius:2px;transition:.25s;}
@@ -160,11 +161,8 @@ button{font-family:inherit;border:none;cursor:pointer;background:none;}
 /* ================= SERVICES GRID ================= */
 .services-section{padding:120px 0 70px;}
 .services-section h2{white-space:nowrap;}
-.cards-grid{margin-top:44px;display:flex;flex-wrap:wrap;justify-content:center;gap:20px;}
-.service-card{background:#fff;border-radius:18px;border:1px solid #ECF1FB;padding:26px 24px;box-shadow:0 6px 18px rgba(16,42,86,0.04);display:flex;flex-direction:column;gap:14px;cursor:pointer;opacity:0;transform:translateY(24px);transition:opacity .55s ease, transform .55s ease, box-shadow .3s ease, border-color .3s ease;flex:0 0 calc((100% / 3) - 14px);max-width:300px;}
-@media (min-width: 1201px){
-  .service-card{min-height:280px;}
-}
+.cards-grid{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.service-card{background:#fff;border-radius:18px;border:1px solid #ECF1FB;padding:26px 24px;box-shadow:0 6px 18px rgba(16,42,86,0.04);display:flex;flex-direction:column;gap:14px;cursor:pointer;opacity:0;transform:translateY(24px);transition:opacity .55s ease, transform .55s ease, box-shadow .3s ease, border-color .3s ease;}
 .service-card.in-view{opacity:1;transform:translateY(0);}
 .service-card:hover{transform:translateY(-6px);box-shadow:0 18px 34px rgba(7,86,214,0.13);border-color:#DCE8FF;}
 .card-icon{width:48px;height:48px;border-radius:13px;background:var(--light-blue);display:flex;align-items:center;justify-content:center;transition:transform .3s ease, background .3s ease;}
@@ -190,6 +188,57 @@ button{font-family:inherit;border:none;cursor:pointer;background:none;}
 .emergency-arrow{margin-left:auto;flex-shrink:0;}
 .emergency-arrow svg{width:20px;height:20px;stroke:var(--primary);transition:transform .3s ease;}
 .emergency-card:hover .emergency-arrow svg{transform:translateX(5px);}
+
+/* ================= LOKASI / MAP SECTION ================= */
+.location-section{padding:70px 0 20px;}
+.location-section .section-title{text-align:center;}
+.location-section .section-title span{color:var(--primary);}
+.location-section .section-desc{text-align:center;margin-left:auto;margin-right:auto;}
+.location-map-card{
+  position:relative;margin-top:36px;border-radius:22px;overflow:hidden;
+  box-shadow:0 16px 40px rgba(16,42,86,0.12);border:1px solid #ECF1FB;
+  background:#fff;
+}
+.location-map-card iframe{display:block;width:100%;height:460px;border:0;}
+.location-info-card{
+  position:absolute;top:24px;left:24px;max-width:290px;
+  background:#fff;border-radius:16px;padding:18px 20px;
+  box-shadow:0 12px 28px rgba(16,42,86,0.18);
+  border:1px solid #ECF1FB;
+}
+.location-info-card h4{font-size:15.5px;font-weight:800;color:var(--primary);margin-bottom:12px;}
+.location-hours{width:100%;border-collapse:collapse;margin-bottom:12px;}
+.location-hours tr td{padding:3px 0;font-size:13px;color:var(--text);vertical-align:top;}
+.location-hours tr td:first-child{color:var(--muted);font-weight:600;white-space:nowrap;padding-right:10px;}
+.location-hours tr td:last-child{font-weight:600;}
+.location-hours tr.closed td:last-child{color:#D9455F;}
+.location-badges{display:flex;flex-wrap:wrap;gap:8px;}
+.location-badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;
+  padding:5px 10px;border-radius:999px;background:#E7F8EF;color:#1D9A5B;
+}
+.location-badge svg{width:13px;height:13px;stroke:#1D9A5B;stroke-width:3;}
+.location-map-footer{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  padding:18px 26px;border-top:1px solid #ECF1FB;background:#fff;
+}
+.location-address-line{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13.5px;font-weight:500;}
+.location-address-line svg{width:18px;height:18px;stroke:var(--primary);flex-shrink:0;}
+.location-map-btn{
+  display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;
+  font-weight:700;font-size:13.5px;padding:11px 20px;border-radius:999px;
+  box-shadow:0 8px 18px rgba(7,86,214,0.3);transition:transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+}
+.location-map-btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(7,86,214,0.38);}
+.location-map-btn svg{width:16px;height:16px;stroke:#fff;}
+@media(max-width:640px){
+  .location-info-card{position:static;max-width:none;margin:16px;border-radius:14px;}
+  .location-map-card{display:flex;flex-direction:column-reverse;}
+  .location-map-card iframe{height:320px;}
+  .location-map-footer{flex-direction:column;align-items:flex-start;}
+  .location-map-btn{width:100%;justify-content:center;}
+}
 
 /* ================= CONTACT LIST (nomor penting page) ================= */
 .contact-grid{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -262,8 +311,7 @@ footer ul li a:hover{color:#fff;}
   .hero{height:760px;}
   .hero-title{font-size:38px;}
   .stat-item{padding:0 12px;}
-  .cards-grid{justify-content:center;}
-  .service-card{flex:0 0 calc((100% / 2) - 10px);max-width:350px;}
+  .cards-grid{grid-template-columns:repeat(2,1fr);}
   .contact-grid{grid-template-columns:repeat(2,1fr);}
   .two-col{grid-template-columns:1fr;}
   .org-grid{grid-template-columns:repeat(2,1fr);}
@@ -281,9 +329,7 @@ footer ul li a:hover{color:#fff;}
   .stat-item{flex:0 0 50%;padding:0 10px;}
   .stat-divider{display:none;}
   .services-section h2, .section-title{white-space:normal;font-size:26px;}
-  .cards-grid{justify-content:center;}
-  .service-card{flex:0 0 100%;max-width:350px;}
-  .contact-grid{grid-template-columns:1fr;}
+  .cards-grid, .contact-grid{grid-template-columns:1fr;}
   .footer-grid{grid-template-columns:1fr 1fr;row-gap:34px;}
   .page-hero{height:260px;}
   .page-hero h1{font-size:26px;}

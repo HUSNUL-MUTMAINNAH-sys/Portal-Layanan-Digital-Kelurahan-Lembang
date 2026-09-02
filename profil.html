@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profil Kelurahan — Kelurahan Lembang</title>
+<meta name="description" content="Profil, sejarah, visi misi, dan struktur pemerintahan Kelurahan Lembang">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  /* ============ Struktur Pemerintahan — scoped styles ============ */
+  .spm-section{ --spm-navy:#0A2E70; --spm-navy-soft:rgba(10,46,112,0.30); --spm-blue:#2E63C7;
+    --spm-red:#C22032; --spm-red-dark:#96141F; --spm-line:#B9C3DA; --spm-card:#ffffff;
+    --spm-border:#E4E9F5; --spm-muted:#5B6B8C; --spm-text:#0F1E3D; }
+
+  /* wide page container just for this section — fills much more of the page than the
+     site's default 1200px .container, while the heading still sits flush left */
+  .spm-wide{ max-width:1460px; margin:0 auto; padding:0 32px; }
+
+  .spm-chart{ max-width:1460px; margin:40px auto 0; padding:0 4px; }
+
+  /* ---- generic card ---- */
+  .spm-card{ background:var(--spm-card); border:1px solid var(--spm-border); border-radius:14px;
+    box-shadow:0 8px 22px rgba(16,30,70,0.07); overflow:hidden; }
+  .spm-card-head{ background:linear-gradient(180deg,var(--spm-red),var(--spm-red-dark)); color:#fff;
+    font-weight:800; font-size:16px; letter-spacing:.03em; text-transform:uppercase; text-align:center;
+    padding:16px 18px; line-height:1.3; }
+  .spm-card-body{ display:flex; align-items:center; gap:18px; padding:20px 22px; }
+  .spm-avatar{ width:76px; height:76px; border-radius:50%; object-fit:cover; flex:0 0 auto;
+    border:3px solid var(--spm-border); box-shadow:0 3px 10px rgba(16,30,70,0.10); }
+  .spm-person{ min-width:0; }
+  .spm-name{ font-weight:800; font-size:17px; color:var(--spm-text); line-height:1.32; }
+  .spm-nip{ font-size:13.5px; color:var(--spm-muted); margin-top:5px; font-weight:600; letter-spacing:.01em; }
+
+  /* ---- Lurah (lead) ---- */
+  .spm-top{ position:relative; display:flex; flex-direction:column; align-items:center; }
+  .spm-lead{ width:340px; }
+  .spm-lead .spm-card-head{ font-size:18px; padding:18px 18px; }
+  .spm-lead .spm-card-body{ padding:24px; gap:20px; }
+  .spm-lead .spm-avatar{ width:96px; height:96px; }
+  .spm-lead .spm-name{ font-size:19.5px; }
+  .spm-lead .spm-nip{ font-size:14px; }
+
+  .spm-line-v{ width:2.5px; background:var(--spm-line); }
+  .spm-lead-to-trunk{ height:38px; }
+
+  /* ---- Sekretaris branch ---- */
+  .spm-branch-row{ position:relative; width:100%; display:flex; flex-direction:column; align-items:center; }
+  .spm-sek-stub{ width:2.5px; height:34px; background:var(--spm-line); }
+  .spm-sekretaris{ width:320px; }
+  .spm-sekretaris .spm-card-head{ font-size:16px; }
+  .spm-sekretaris .spm-card-body{ padding:18px 20px; gap:16px; }
+  .spm-sekretaris .spm-avatar{ width:70px; height:70px; }
+
+  .spm-trunk-down{ height:34px; }
+
+  /* ---- three columns ---- */
+  .spm-columns{ position:relative; display:flex; justify-content:center; gap:48px;
+    padding-top:38px; max-width:1400px; margin:0 auto; }
+  .spm-columns::before{ content:''; position:absolute; top:0; left:16.6667%; right:16.6667%;
+    height:2.5px; background:var(--spm-line); }
+  .spm-col{ flex:1 1 0; max-width:400px; position:relative; display:flex; flex-direction:column; gap:16px; }
+  .spm-col::before{ content:''; position:absolute; top:-38px; left:50%; width:2.5px; height:38px;
+    background:var(--spm-line); transform:translateX(-50%); }
+
+  .spm-col .spm-card-body{ padding:18px 20px; gap:16px; }
+  .spm-col .spm-avatar{ width:64px; height:64px; }
+  .spm-col-connector{ align-self:center; width:2.5px; height:16px; background:var(--spm-line); }
+
+  /* samakan tinggi semua kotak header kolom, walau teksnya ada yang panjang (2 baris) */
+  .spm-col .spm-card-head{ display:flex; align-items:center; justify-content:center;
+    min-height:74px; box-sizing:border-box; }
+
+  /* ---- staff honorer list card ---- */
+  .spm-honor-list{ padding:10px 10px 14px; }
+  .spm-honor-item{ display:flex; align-items:center; gap:14px; padding:10px 12px; border-radius:10px; }
+  .spm-honor-item:hover{ background:#F6F8FC; }
+  .spm-honor-avatar{ width:44px; height:44px; border-radius:50%; object-fit:cover; flex:0 0 auto;
+    border:2px solid var(--spm-border); }
+  .spm-honor-name{ font-size:14.5px; font-weight:700; color:var(--spm-text); }
+
+  /* ---- tablet: keep 3 columns but scale everything down a notch ---- */
+  @media (max-width:1300px){
+    .spm-columns{ gap:26px; max-width:100%; }
+    .spm-col{ max-width:32%; }
+    .spm-col .spm-avatar{ width:56px; height:56px; }
+    .spm-col .spm-card-body{ padding:16px 16px; gap:12px; }
+    .spm-col .spm-card-head{ min-height:74px; }
+    .spm-name{ font-size:15.5px; }
+  }
+
+  @media (max-width:960px){
+    .spm-wide{ padding:0 24px; }
+    .spm-columns{ flex-direction:column; align-items:center; gap:34px; }
+    .spm-columns::before{ display:none; }
+    .spm-col{ max-width:420px; width:100%; }
+    .spm-col::before{ display:none; }
+    .spm-col .spm-avatar{ width:68px; height:68px; }
+    .spm-sek-stub{ height:24px; }
+    .spm-lead{ width:100%; max-width:360px; }
+    .spm-sekretaris{ width:100%; max-width:320px; }
+    .spm-trunk-down{ height:24px; }
+  }
+
+  @media (max-width:520px){
+    .spm-wide{ padding:0 16px; }
+    .spm-chart{ padding:0; }
+    .spm-lead .spm-avatar{ width:80px; height:80px; }
+    .spm-name{ font-size:15.5px; }
+    .spm-card-head{ font-size:14.5px; padding:14px 14px; }
+  }
+</style>
+</head>
+<body>
+<header class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="Logo Kabupaten Bantaeng">
+      <div class="brand-text">
+        <span class="t1">Kelurahan Lembang</span>
+        <span class="t2">Kabupaten Bantaeng</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="">Beranda</a></li>
+      <li><a href="profil.html" class="active">Profil Kelurahan</a></li>
+      <li class="has-dropdown">
+        <a href="layanan.html" class="">Layanan
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="dropdown">
+          <a href="layanan-posyandu.html">Posyandu</a>
+          <a href="layanan-sekolah-dasar.html">Sekolah Dasar</a>
+          <a href="layanan-paud.html">PAUD</a>
+          <a href="layanan-umkm.html">UMKM</a>
+          <a href="layanan-sma-smk.html">SMA/SMK</a>
+          <a href="layanan-kelompok-tani.html">Kelompok Tani</a>
+        </div>
+      </li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-btn" id="closeMobile">&times;</div>
+  <ul>
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="profil.html">Profil Kelurahan</a></li>
+    <li><a href="layanan.html">Layanan</a></li>
+    <li><a href="nomor-penting.html">Nomor Penting</a></li>
+  </ul>
+</div>
+
+<section class="page-hero" style="background-image:url('https://images.pexels.com/photos/15285301/pexels-photo-15285301.jpeg?auto=compress&cs=tinysrgb&w=1600')">
+  <div class="page-hero-scrim"></div>
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Beranda</a><span>/</span><span>Profil Kelurahan</span></div>
+    <h1>Profil Kelurahan Lembang</h1>
+    <p>Mengenal lebih dekat sejarah, visi misi, dan pemerintahan Kelurahan Lembang, Kabupaten Bantaeng.</p>
+  </div>
+</section>
+
+<section class="spm-wide content-section spm-section" style="padding-bottom:100px;">
+  <div class="sec-eyebrow"><span class="bar"></span><span>PEMERINTAHAN</span></div>
+  <h2 class="section-title">Struktur Pemerintahan</h2>
+  <p class="section-desc">Susunan perangkat Kelurahan Lembang yang menjalankan roda pemerintahan dan pelayanan masyarakat.</p>
+  <div class="spm-chart">
+
+    <!-- LURAH -->
+    <div class="spm-top">
+      <div class="spm-card spm-lead">
+        <div class="spm-card-head">Lurah</div>
+        <div class="spm-card-body">
+          <img class="spm-avatar" src="assets/pejabat-dedy.jpg" alt="Foto Lurah">
+          <div class="spm-person">
+            <div class="spm-name">Dedy Anshari R, S.Kom.MM</div>
+            <div class="spm-nip">NIP. 19851204 201212 1003</div>
+          </div>
+        </div>
+      </div>
+      <div class="spm-line-v spm-lead-to-trunk"></div>
+    </div>
+
+    <!-- SEKRETARIS branch -->
+    <div class="spm-branch-row">
+      <div class="spm-sek-stub"></div>
+      <div class="spm-card spm-sekretaris">
+        <div class="spm-card-head">Sekretaris</div>
+        <div class="spm-card-body">
+          <img class="spm-avatar" src="https://images.pexels.com/photos/28446973/pexels-photo-28446973.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Sekretaris">
+          <div class="spm-person">
+            <div class="spm-name">Irfan Razak, SE</div>
+            <div class="spm-nip">NIP. 19810212 200901 1009</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- trunk continues down to the 3 columns -->
+    <div class="spm-top">
+      <div class="spm-line-v spm-trunk-down"></div>
+    </div>
+
+    <!-- THREE COLUMNS -->
+    <div class="spm-columns">
+
+      <!-- COLUMN 1 -->
+      <div class="spm-col">
+        <div class="spm-card">
+          <div class="spm-card-head">Kasi Pemerintahan</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/10347162/pexels-photo-10347162.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Kasi Pemerintahan">
+            <div class="spm-person">
+              <div class="spm-name">Astinawati AS, S.Sos.MM</div>
+              <div class="spm-nip">NIP. 19821001 201408 2 001</div>
+            </div>
+          </div>
+        </div>
+        <div class="spm-col-connector"></div>
+        <div class="spm-card">
+          <div class="spm-card-head">Staf PNS</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/8068120/pexels-photo-8068120.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Staf PNS">
+            <div class="spm-person">
+              <div class="spm-name">Sri Santi Handayani, S.Sos</div>
+              <div class="spm-nip">NIP. 19821001 201408 2 001</div>
+            </div>
+          </div>
+        </div>
+        <div class="spm-col-connector"></div>
+        <div class="spm-card">
+          <div class="spm-card-head">Staf Honorer</div>
+          <div class="spm-honor-list">
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/8154928/pexels-photo-8154928.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Rahmatiah</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/10347517/pexels-photo-10347517.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Kertia, S.IP</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/10347162/pexels-photo-10347162.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Nurhikmawati</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/28441026/pexels-photo-28441026.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Sandi Restu</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2 -->
+      <div class="spm-col">
+        <div class="spm-card">
+          <div class="spm-card-head">Kasi Pelayanan Umum</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/8154928/pexels-photo-8154928.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Kasi Pelayanan Umum">
+            <div class="spm-person">
+              <div class="spm-name">Nursyamsi, A.Md</div>
+              <div class="spm-nip">NIP. 19830222 201001 2 0025</div>
+            </div>
+          </div>
+        </div>
+        <div class="spm-col-connector"></div>
+        <div class="spm-card">
+          <div class="spm-card-head">Staf PNS</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/10347517/pexels-photo-10347517.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Staf PNS">
+            <div class="spm-person">
+              <div class="spm-name">Rostini, SE</div>
+              <div class="spm-nip">NIP. 19780823 200604 2 025</div>
+            </div>
+          </div>
+        </div>
+        <div class="spm-col-connector"></div>
+        <div class="spm-card">
+          <div class="spm-card-head">Staf Honorer</div>
+          <div class="spm-honor-list">
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/8068120/pexels-photo-8068120.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Syamsinar</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/10347162/pexels-photo-10347162.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Elvira Ramadhani</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/8154928/pexels-photo-8154928.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Jumriani</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/10347517/pexels-photo-10347517.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Sunarti</span></div>
+            <div class="spm-honor-item"><img class="spm-honor-avatar" src="https://images.pexels.com/photos/8068120/pexels-photo-8068120.jpeg?auto=compress&cs=tinysrgb&w=120" alt=""><span class="spm-honor-name">Rahmawati</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 3 -->
+      <div class="spm-col">
+        <div class="spm-card">
+          <div class="spm-card-head">Kasi Pemberdayaan Ekonomi Masyarakat</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/32844861/pexels-photo-32844861.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Kasi Pemberdayaan Ekonomi Masyarakat">
+            <div class="spm-person">
+              <div class="spm-name">Sabir, SE</div>
+              <div class="spm-nip">NIP. ....................................</div>
+            </div>
+          </div>
+        </div>
+        <div class="spm-col-connector"></div>
+        <div class="spm-card">
+          <div class="spm-card-head">Staf PNS</div>
+          <div class="spm-card-body">
+            <img class="spm-avatar" src="https://images.pexels.com/photos/28441026/pexels-photo-28441026.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Foto Staf PNS">
+            <div class="spm-person">
+              <div class="spm-name">Adi Chandra</div>
+              <div class="spm-nip">NIP. 19840421 201601 1 001</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="container location-section" id="lokasi">
+  <h2 class="section-title">Lokasi <span>Kelurahan Lembang</span></h2>
+  <p class="section-desc">Temukan lokasi Kantor Kelurahan Lembang dengan mudah melalui peta interaktif di bawah ini.</p>
+
+  <div class="location-map-card">
+    <div class="location-info-card">
+      <h4>KANTOR KELURAHAN LEMBANG</h4>
+      <table class="location-hours">
+        <tr><td>Senin&nbsp;-&nbsp;Kamis</td><td>07:30 &ndash; 16:00 WITA</td></tr>
+        <tr><td>Jumat</td><td>07:30 &ndash; 16:30 WITA</td></tr>
+        <tr class="closed"><td>Sabtu&nbsp;-&nbsp;Minggu</td><td>Tutup</td></tr>
+      </table>
+      <div class="location-badges">
+        <span class="location-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Buka</span>
+        <span class="location-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Pelayanan Publik</span>
+      </div>
+    </div>
+    <iframe
+      src="https://www.google.com/maps?q=Kantor+Kelurahan+Lembang+Bantaeng,+Lembang,+Kec.+Bantaeng,+Kabupaten+Bantaeng,+Sulawesi+Selatan&z=17&output=embed"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Peta Lokasi Kantor Kelurahan Lembang">
+    </iframe>
+    <div class="location-map-footer">
+      <div class="location-address-line">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        <span>Jl. H. Solthan No. Kelurahan Lembang-Kecamatan Bantaeng-Kabupaten Bantaeng</span>
+      </div>
+      <a class="location-map-btn" href="https://maps.app.goo.gl/XPTTTVyzodoss8bv7?g_st=ac" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        Buka di Google Maps
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="footer-wave">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,90 480,0 720,36 C960,72 1200,90 1440,30 L1440,90 L0,90 Z" fill="#0A2E70"></path>
+  </svg>
+</div>
+<footer>
+  <svg class="coral left" viewBox="0 0 100 200" fill="none" stroke="#3E6BC4" stroke-width="2">
+    <path d="M20 200 C15 160 25 140 20 110 C15 85 30 70 25 40"/>
+    <path d="M20 110 C35 100 40 80 35 55"/>
+    <path d="M20 140 C5 130 0 105 8 85"/>
+    <path d="M25 70 C40 60 45 40 38 20"/>
+  </svg>
+  <svg class="coral right" viewBox="0 0 100 200" fill="none" stroke="#3E6BC4" stroke-width="2">
+    <path d="M20 200 C15 160 25 140 20 110 C15 85 30 70 25 40"/>
+    <path d="M20 110 C35 100 40 80 35 55"/>
+    <path d="M20 140 C5 130 0 105 8 85"/>
+    <path d="M25 70 C40 60 45 40 38 20"/>
+  </svg>
+
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Logo Kabupaten Bantaeng">
+        <div>
+          <div class="t1">Kelurahan Lembang</div>
+          <div class="t2">Kabupaten Bantaeng</div>
+        </div>
+      </div>
+      <div class="footer-address">
+        Jl. Poros Bantaeng &ndash; Lembang<br>
+        Kelurahan Lembang, Kec. Bantaeng<br>
+        Kabupaten Bantaeng, Sulawesi Selatan
+      </div>
+    </div>
+
+    <div>
+      <h4>Tautan Cepat</h4>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="profil.html">Profil Kelurahan</a></li>
+        <li><a href="layanan.html">Layanan</a></li>
+          </ul>
+    </div>
+
+    <div>
+      <h4>Hubungi Kami</h4>
+      <ul>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>+62</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>kelurahanlembangbantaeng@gmail.com</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Jl. H. Solthan No. Kelurahan Lembang-Kecamatan Bantaeng-Kabupaten Bantaeng</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Ikuti Kami</h4>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 6.2a2.8 2.8 0 0 0-2-2C18.9 3.7 12 3.7 12 3.7s-6.9 0-8.5.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.8 2.8 2.8 0 0 0 2 2c1.6.5 8.5.5 8.5.5s6.9 0 8.5-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.8z"></path><polygon points="9.8 15.5 15.8 12 9.8 8.5"></polygon></svg></a>
+        <a href="#" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">&copy; 2024 Kelurahan Lembang, Kabupaten Bantaeng. All rights reserved.</div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>

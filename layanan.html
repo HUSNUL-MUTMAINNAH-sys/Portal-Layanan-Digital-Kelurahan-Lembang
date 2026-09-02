@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prasarana Kelurahan — Kelurahan Lembang</title>
+<meta name="description" content="Data dan informasi prasarana serta fasilitas yang tersedia di wilayah Kelurahan Lembang.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body><header class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="Logo Kabupaten Bantaeng">
+      <div class="brand-text">
+        <span class="t1">Kelurahan Lembang</span>
+        <span class="t2">Kabupaten Bantaeng</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="">Beranda</a></li>
+      <li><a href="profil.html" class="">Profil Kelurahan</a></li>
+      <li class="has-dropdown">
+        <a href="layanan.html" class="active">Layanan
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="dropdown">
+          <a href="layanan-posyandu.html">Posyandu</a>
+          <a href="layanan-sekolah-dasar.html">Sekolah Dasar</a>
+          <a href="layanan-paud.html">PAUD</a>
+          <a href="layanan-umkm.html">UMKM</a>
+          <a href="layanan-sma-smk.html">SMA/SMK</a>
+          <a href="layanan-kelompok-tani.html">Kelompok Tani</a>
+        </div>
+      </li>
+    </ul>
+    <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="close-btn" id="closeMobile">&times;</div>
+  <ul>
+    <li><a href="index.html">Beranda</a></li>
+    <li><a href="profil.html">Profil Kelurahan</a></li>
+    <li><a href="layanan.html">Layanan</a></li>
+    <li><a href="nomor-penting.html">Nomor Penting</a></li>
+  </ul>
+</div>
+<section class="page-hero" style="background-image:url('https://images.pexels.com/photos/15285301/pexels-photo-15285301.jpeg?auto=compress&cs=tinysrgb&w=1600')">
+  <div class="page-hero-scrim"></div>
+  <div class="container page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Beranda</a><span>/</span><a href="layanan.html">Layanan</a><span>/</span><span>Prasarana Kelurahan</span></div>
+    <h1>Prasarana Kelurahan Lembang</h1>
+    <p>Data dan informasi prasarana serta fasilitas yang tersedia di wilayah Kelurahan Lembang.</p>
+  </div>
+</section>
+<style>
+  .prasarana-cta{display:flex;align-items:center;gap:8px;color:#0A2E70;font-weight:600;font-size:14px;}
+  .prasarana-count{display:inline-flex;align-items:center;gap:8px;background:#EAF0FB;color:#0A2E70;font-weight:700;padding:8px 16px;border-radius:999px;font-size:14px;margin-bottom:28px;}
+  .prasarana-data-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media (max-width:1024px){.prasarana-data-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:640px){.prasarana-data-grid{grid-template-columns:1fr;}}
+  .prasarana-data-card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 18px rgba(10,46,112,0.08);border:1px solid #EEF2F9;}
+  .prasarana-data-card .pdc-title{font-size:17px;font-weight:700;color:#0A2E70;margin:0 0 10px;}
+  .prasarana-status{display:inline-block;font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:#E6F6EC;color:#158A45;margin-bottom:14px;}
+  .prasarana-row{display:flex;gap:8px;font-size:14px;color:#4A5568;padding:6px 0;border-top:1px solid #F1F4F9;}
+  .prasarana-row:first-of-type{border-top:none;}
+  .prasarana-row .lbl{flex:0 0 84px;color:#8A94A6;font-weight:600;}
+  .prasarana-row .val{flex:1;color:#1E2A3C;}
+  .prasarana-empty{background:#fff;border-radius:20px;padding:56px 32px;text-align:center;box-shadow:0 4px 18px rgba(10,46,112,0.08);border:1px dashed #C9D6EC;max-width:640px;margin:0 auto;}
+  .prasarana-empty .pe-icon{width:56px;height:56px;margin:0 auto 18px;color:#3E6BC4;}
+  .prasarana-empty h3{color:#0A2E70;font-size:20px;margin:0 0 10px;}
+  .prasarana-empty p{color:#5B6578;font-size:14px;line-height:1.6;margin:0;}
+  .prasarana-back-row{margin-top:36px;text-align:center;}
+  .prasarana-btn-back{display:inline-flex;align-items:center;gap:10px;background:#0A2E70;color:#fff;font-weight:600;font-size:14px;padding:12px 26px;border-radius:999px;text-decoration:none;transition:background .2s ease;}
+  .prasarana-btn-back:hover{background:#3E6BC4;}
+  .prasarana-btn-back svg{width:16px;height:16px;}
+
+  /* --- Prasarana card: centered layout & icon circles --- */
+  .services-section .cards-grid .service-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:32px 26px 28px;
+  }
+  .services-section .cards-grid .card-icon{
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 18px;
+    flex-shrink:0;
+  }
+  .services-section .cards-grid .card-icon svg{
+    width:34px;
+    height:34px;
+  }
+  .services-section .cards-grid .card-title{
+    margin:0 0 8px;
+  }
+  .services-section .cards-grid .card-desc{
+    margin:0 0 18px;
+  }
+  .services-section .cards-grid .card-arrow-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    margin-top:auto;
+  }
+  .services-section .cards-grid .card-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Icon color themes per card — palet & background mengikuti gambar referensi */
+  .icon-posyandu{background:#FCE1E7;}
+  .icon-sekolah-dasar{background:#5B9EE8;}
+  .icon-paud{background:#DCEFC0;}
+  .icon-umkm{background:#FBE3CC;}
+  .icon-sma-smk{background:#E8E1F6;}
+  .icon-kelompok-tani{background:#DFEFAE;}
+  .services-section .cards-grid .card-icon svg{ width:40px; height:40px; }
+</style>
+
+<section class="container services-section" style="padding-top:70px;">
+  <div style="max-width:760px;margin:0 auto 40px;text-align:center;">
+    <h2 style="color:#0A2E70;font-size:26px;margin:0 0 12px;">Prasarana Kelurahan Lembang</h2>
+    <p style="color:#5B6578;font-size:15px;line-height:1.7;margin:0;">Informasi prasarana, fasilitas pendidikan, kesehatan, ekonomi, dan kelompok masyarakat yang terdapat di Kelurahan Lembang.</p>
+  </div>
+  <div class="cards-grid">
+    <a href="layanan-posyandu.html" class="service-card">
+      <div class="card-icon icon-posyandu"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M21,28 C21,27 20.2,26.2 19.3,26.5 L14.6,28.3 C12,29.4 10.3,32 10.3,34.8 C10.3,36.2 11.5,37.3 12.9,37.1 C16.9,36.7 20.4,34.3 22.3,30.8 C22.8,29.9 22.2,28.8 21,28 Z" fill="#D6335A"></path><path d="M27,28 C27,27 27.8,26.2 28.7,26.5 L33.4,28.3 C36,29.4 37.7,32 37.7,34.8 C37.7,36.2 36.5,37.3 35.1,37.1 C31.1,36.7 27.6,34.3 25.7,30.8 C25.2,29.9 25.8,28.8 27,28 Z" fill="#D6335A"></path><path d="M24,31 C24,31 12.5,23.2 12.5,15.2 C12.5,10.6 16.1,7.5 20,7.5 C22.2,7.5 23.6,8.7 24,9.6 C24.4,8.7 25.8,7.5 28,7.5 C31.9,7.5 35.5,10.6 35.5,15.2 C35.5,23.2 24,31 24,31 Z" fill="#EF4368"></path><path d="M20,15.5 L24,19.5 L20,24.5 Z" fill="#FDFBFC"></path><path d="M28,15.5 L24,19.5 L28,24.5 Z" fill="#FDFBFC"></path></svg></div>
+      <div class="card-title">Posyandu</div>
+      <div class="card-desc">Jumlah Posyandu Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+
+    <a href="layanan-sekolah-dasar.html" class="service-card">
+      <div class="card-icon icon-sekolah-dasar"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M16,23 L16,29.5 C16,32.5 19.6,35 24,35 C28.4,35 32,32.5 32,29.5 L32,23 L24,27.5 Z" fill="#EAF3FC"></path><path d="M24,14 L41,21.5 L24,29 L7,21.5 Z" fill="#FDFEFE"></path><path d="M24,25.3 L30,22.6 L30,29.5 C30,29.5 27.5,31 24,25.3 Z" fill="#DCEAF9"></path><path d="M35,22.5 L35,30.5" stroke="#BBD3EE" stroke-width="1.6" stroke-linecap="round" fill="none"></path><circle cx="35" cy="31.6" r="1.7" fill="#7C93B8"></circle></svg></div>
+      <div class="card-title">Sekolah Dasar</div>
+      <div class="card-desc">Jumlah Sekolah Dasar Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+
+    <a href="layanan-paud.html" class="service-card">
+      <div class="card-icon icon-paud"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><circle cx="17.5" cy="17.5" r="4.2" fill="#152449"></circle><path d="M13,22.2 L22,22.2 L23.6,35.5 L11.4,35.5 Z" fill="#152449"></path><circle cx="31" cy="18.5" r="4.6" fill="#152449"></circle><path d="M25.6,23 L36.4,23 L38.2,36.5 L23.8,36.5 Z" fill="#152449"></path><path d="M22.3,16 C23.3,15 24.7,15 25.7,16" stroke="#152449" stroke-width="1.6" stroke-linecap="round" fill="none"></path></svg></div>
+      <div class="card-title">PAUD</div>
+      <div class="card-desc">Jumlah PAUD Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+
+    <a href="layanan-umkm.html" class="service-card">
+      <div class="card-icon icon-umkm"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="11" y="24" width="26" height="14" rx="1.2" fill="#20264A"></rect><rect x="13.4" y="26.4" width="21.2" height="9.6" fill="#CDE9F8"></rect><path d="M17,36 L21,26.4 L24,36 Z" fill="#FDFEFE" opacity="0.75"></path><path d="M25,36 L29,26.4 L32,36 Z" fill="#FDFEFE" opacity="0.55"></path><rect x="10" y="15.5" width="28" height="4.6" rx="1.4" fill="#20264A"></rect><path d="M10,20 L38,20 L38,21.6 C36.3,25 35.5,25 33.8,21.6 C32.1,25 31.3,25 29.6,21.6 C27.9,25 27.1,25 25.4,21.6 C23.7,25 22.9,25 21.2,21.6 C19.5,25 18.7,25 17,21.6 C15.3,25 14.5,25 12.8,21.6 C11.6,23.9 10.8,24 10,22.6 Z" fill="#F3821E"></path><path d="M12.8,21.6 C14.5,25 15.3,25 17,21.6 L17,20 L12.8,20 Z" fill="#FDFEFE"></path><path d="M21.2,21.6 C22.9,25 23.7,25 25.4,21.6 L25.4,20 L21.2,20 Z" fill="#FDFEFE"></path><path d="M29.6,21.6 C31.3,25 32.1,25 33.8,21.6 L33.8,20 L29.6,20 Z" fill="#FDFEFE"></path></svg></div>
+      <div class="card-title">UMKM</div>
+      <div class="card-desc">Jumlah UMKM Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+
+    <a href="layanan-sma-smk.html" class="service-card">
+      <div class="card-icon icon-sma-smk"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><rect x="23.3" y="6.5" width="1.4" height="8" fill="#262F91"></rect><path d="M24.7,7.4 L30.5,9.4 L24.7,11.4 Z" fill="#262F91"></path><path d="M12,19 L24,11.5 L36,19 L36,21.5 L12,21.5 Z" fill="#262F91"></path><rect x="13.5" y="19.5" width="21" height="16.5" rx="1" fill="#262F91"></rect><rect x="17" y="23" width="4.4" height="4.4" rx="0.6" fill="#F4F2FB"></rect><rect x="26.6" y="23" width="4.4" height="4.4" rx="0.6" fill="#F4F2FB"></rect><path d="M20.6,36 L20.6,29.6 C20.6,28.5 21.5,27.6 22.6,27.6 L25.4,27.6 C26.5,27.6 27.4,28.5 27.4,29.6 L27.4,36 Z" fill="#F4F2FB"></path><rect x="11" y="35.5" width="26" height="2.2" rx="1" fill="#262F91"></rect></svg></div>
+      <div class="card-title">SMA/SMK</div>
+      <div class="card-desc">Jumlah SMA/SMK Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+
+    <a href="layanan-kelompok-tani.html" class="service-card">
+      <div class="card-icon icon-kelompok-tani"><svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M24,34 L24,20" stroke="#5CA83F" stroke-width="2.4" stroke-linecap="round" fill="none"></path><path d="M24,20.5 C18.5,19.5 14.5,15.5 13.5,9 C20.5,9.3 24.3,13.3 24,20.5 Z" fill="#4C9A3F"></path><path d="M24,20 C29,16.8 34,13 35,6.8 C27,7.6 23.7,12.8 24,20 Z" fill="#8FCB4A"></path><path d="M10.6,38.5 C10.2,35.6 12.3,33.2 15.2,33.2 C15.6,31 17.8,29.6 19.9,30.3 C21,28.4 24,28.3 25.2,30.2 C27.4,29 29.9,30.3 30.2,32.6 C33.2,32.7 35.3,35.2 34.8,38.5 Z" fill="#8A5A2E"></path><path d="M13.5,34.8 C15,33.6 17,33.4 18.6,34.3" stroke="#A97A45" stroke-width="1.1" stroke-linecap="round" fill="none" opacity="0.7"></path></svg></div>
+      <div class="card-title">Kelompok Tani</div>
+      <div class="card-desc">Jumlah Kelompok Tani Kelurahan Lembang</div>
+      <div class="card-arrow-row">
+        <span class="prasarana-cta">Lihat Data</span>
+        <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </a>
+  </div>
+</section>
+<div class="footer-wave">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C240,90 480,0 720,36 C960,72 1200,90 1440,30 L1440,90 L0,90 Z" fill="#0A2E70"></path>
+  </svg>
+</div>
+<footer>
+  <svg class="coral left" viewBox="0 0 100 200" fill="none" stroke="#3E6BC4" stroke-width="2">
+    <path d="M20 200 C15 160 25 140 20 110 C15 85 30 70 25 40"/>
+    <path d="M20 110 C35 100 40 80 35 55"/>
+    <path d="M20 140 C5 130 0 105 8 85"/>
+    <path d="M25 70 C40 60 45 40 38 20"/>
+  </svg>
+  <svg class="coral right" viewBox="0 0 100 200" fill="none" stroke="#3E6BC4" stroke-width="2">
+    <path d="M20 200 C15 160 25 140 20 110 C15 85 30 70 25 40"/>
+    <path d="M20 110 C35 100 40 80 35 55"/>
+    <path d="M20 140 C5 130 0 105 8 85"/>
+    <path d="M25 70 C40 60 45 40 38 20"/>
+  </svg>
+
+  <div class="container footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="assets/logo.png" alt="Logo Kabupaten Bantaeng">
+        <div>
+          <div class="t1">Kelurahan Lembang</div>
+          <div class="t2">Kabupaten Bantaeng</div>
+        </div>
+      </div>
+      <div class="footer-address">
+        Jl. Poros Bantaeng &ndash; Lembang<br>
+        Kelurahan Lembang, Kec. Bantaeng<br>
+        Kabupaten Bantaeng, Sulawesi Selatan
+      </div>
+    </div>
+
+    <div>
+      <h4>Tautan Cepat</h4>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="profil.html">Profil Kelurahan</a></li>
+        <li><a href="layanan.html">Layanan</a></li>
+          </ul>
+    </div>
+
+    <div>
+      <h4>Hubungi Kami</h4>
+      <ul>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><span>+62</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>kelurahanlembangbantaeng@gmail.com</span></li>
+        <li class="contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Jl. H. Solthan No. Kelurahan Lembang-Kecamatan Bantaeng-Kabupaten Bantaeng</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Ikuti Kami</h4>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 6.2a2.8 2.8 0 0 0-2-2C18.9 3.7 12 3.7 12 3.7s-6.9 0-8.5.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.8 2.8 2.8 0 0 0 2 2c1.6.5 8.5.5 8.5.5s6.9 0 8.5-.5a2.8 2.8 0 0 0 2-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.8z"></path><polygon points="9.8 15.5 15.8 12 9.8 8.5"></polygon></svg></a>
+        <a href="#" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">&copy; 2024 Kelurahan Lembang, Kabupaten Bantaeng. All rights reserved.</div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
